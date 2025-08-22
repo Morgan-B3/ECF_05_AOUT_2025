@@ -110,21 +110,20 @@ La conception de l'application a été réalisée en suivant les diagrammes suiv
 
 ##### Espèces
 
-* `GET /species` → Liste des espèces connues
 * `POST /species` → Ajouter une espèce
+* `GET /species` → Liste des espèces connues
 * `GET /species/{id}` → Détails d’une espèce
 
 ##### Observations
 
-* `GET /observations` → Toutes les observations (avec filtres possibles)
 * `POST /observations` → Ajouter une observation
+* `GET /observations` → Toutes les observations (avec filtres possibles)
 * `GET /observations/{id}` → Voir une observation
 * `GET /observations/by-location?location=Paris` → Filtrer par lieu
 * `GET /observations/by-species/{speciesId}` → Filtrer par espèce
 
 ##### Déplacements
-* `POST /travel-logs`
-  Créer un déplacement lié à une observation (inclut le calcul CO₂).
-* `GET /travel-logs`
-  Liste des déplacements + émissions totales CO₂.
-* `GET /travel-logs/stats/{idObservation}`
+* `POST /travel-logs` → Créer un déplacement lié à une observation
+* `GET /travel-logs` → Liste des déplacements + émissions totales CO₂.
+* `GET /travel-logs/stats/{idObservation}` → Liste les statistiques liées à un déplacement (émission totale et individuelle de chaque transport)
+* `GET /travel-logs/user/{name}` → Liste les déplacements du mois dernier pour un utilisateur donné
