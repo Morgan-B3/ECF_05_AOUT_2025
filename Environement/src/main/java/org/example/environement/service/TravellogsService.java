@@ -3,10 +3,7 @@ package org.example.environement.service;
 import org.example.environement.dto.travellogs.TravellogDtoReceive;
 import org.example.environement.dto.travellogs.TravellogDtoResponse;
 import org.example.environement.dto.travellogs.TravellogDtoStat;
-import org.example.environement.entity.Observation;
 import org.example.environement.entity.Travellog;
-import org.example.environement.exception.NotFoundException;
-import org.example.environement.repository.ObservationRepository;
 import org.example.environement.repository.TravellogRepository;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -21,10 +18,8 @@ import java.util.stream.Collectors;
 @Service
 public class TravellogsService {
     private TravellogRepository travellogRepository;
-    private ObservationRepository observationRepository;
-    public TravellogsService (TravellogRepository travellogRepository, ObservationRepository observationRepository) {
+    public TravellogsService (TravellogRepository travellogRepository) {
         this.travellogRepository = travellogRepository;
-        this.observationRepository = observationRepository;
     }
 
     public List<TravellogDtoResponse> get(int pageSize){
@@ -32,9 +27,9 @@ public class TravellogsService {
     }
 
     public TravellogDtoStat getStat(long id){
-        Observation observation = observationRepository.findById(id).orElseThrow(NotFoundException::new);
+        List<Travellog> travellogs = travellogRepository.findTravellogByObservationId(id);
         TravellogDtoStat travellogDtoStat = new TravellogDtoStat();
-        for (Travellog travellog : observation.getTravellogs()){
+        for (Travellog travellog : travellogs){
             travellogDtoStat.addTotalEmissionsKg(travellog.getEstimatedCo2Kg());
             travellogDtoStat.addMode(travellog.getMode().toString(), travellog.getDistanceKm());
             travellogDtoStat.addTotalDistanceKm(travellog.getDistanceKm());

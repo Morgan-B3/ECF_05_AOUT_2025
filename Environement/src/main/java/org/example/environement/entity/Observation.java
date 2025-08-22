@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import org.example.environement.dto.observation.ObservationDtoResponse;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,7 +36,7 @@ public class Observation {
     private Specie specie;
 
     @OneToMany(mappedBy = "observation", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
-    private List<Travellog> travellogs;
+    private List<Travellog> travellogs = new ArrayList<>();
 
 
     public ObservationDtoResponse entityToDto (){
@@ -50,5 +51,10 @@ public class Observation {
                 .specie(this.getSpecie().entityToDto())
                 .travellogs(this.getTravellogs().stream().map(Travellog::entityToDto).collect(Collectors.toList()))
                 .build();
+    }
+
+    public void addTravellog(Travellog travellog){
+        this.travellogs.add(travellog);
+        travellog.setObservation(this);
     }
 }

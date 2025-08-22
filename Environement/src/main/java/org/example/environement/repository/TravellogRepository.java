@@ -11,7 +11,7 @@ import java.util.List;
 
 @Repository
 public interface TravellogRepository extends JpaRepository<Travellog,Long> {
-    public List<Travellog> findTravellogByObservation_Id (long id);
+    public List<Travellog> findTravellogByObservationId (long id);
 
     @Query("select t from Travellog t where t.observation.observerName = ?1 and t.observation.observationDate > ?2")
     public List<Travellog> findTravellogByUserForLastMonth (String user, LocalDate date);
