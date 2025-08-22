@@ -20,13 +20,13 @@ public class Observation {
     @Id
     @GeneratedValue
     private long id;
-    @Column(nullable = false)
+    @Column(name = "observer_name", nullable = false)
     private String observerName;
     @Column(nullable = false)
     private String location;
     @Column(nullable = false)
     private Double latitude,longitude;
-    @Column(nullable = false)
+    @Column(name = "observation_date", nullable = false)
     private LocalDate observationDate;
     private String comment;
 

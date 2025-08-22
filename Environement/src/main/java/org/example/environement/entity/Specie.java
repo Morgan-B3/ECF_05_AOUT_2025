@@ -17,9 +17,9 @@ public class Specie {
     @Id
     @GeneratedValue
     private long id;
-    @Column(nullable = false)
+    @Column(name = "common_name", nullable = false)
     private String commonName;
-    @Column(nullable = false)
+    @Column(name = "scientific_name", nullable = false)
     private String scientificName;
     @Column(nullable = false)
     private Category category;
