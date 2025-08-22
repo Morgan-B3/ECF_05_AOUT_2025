@@ -1,7 +1,7 @@
 # Application Environement
 
 ## Présentation
-L’application **Environement** est **API REST Java** permettant de signaler et de visualiser des observations d’espèces (animales, végétales...) dans la nature.  
+L’application **Environement** est une **API REST Java** permettant de signaler et de visualiser des observations d’espèces (animales, végétales...) dans la nature.  
 Elle repose sur une architecture **Spring Boot**, **JPA/Hibernate** pour la persistance, et **MySQL** comme base de données relationnelle.
 
 Les principales fonctionnalités sont :  
