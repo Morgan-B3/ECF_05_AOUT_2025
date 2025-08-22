@@ -117,7 +117,7 @@ La conception de l'application a été réalisée en suivant les diagrammes suiv
 ##### Observations
 
 * `POST /observations` → Ajouter une observation
-* `GET /observations` → Toutes les observations (avec filtres possibles)
+* `GET /observations?pageSize=10&pageNumber=0` → Toutes les observations (avec option de filtre d'affichage)
 * `GET /observations/{id}` → Voir une observation
 * `GET /observations/by-location?location=Paris` → Filtrer par lieu
 * `GET /observations/by-species/{speciesId}` → Filtrer par espèce
