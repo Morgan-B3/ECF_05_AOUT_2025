@@ -1,123 +1,112 @@
-# **Sujet ECF 1 – CDA**
+# Application Environement
 
-## **Contexte**
+## Présentation
+L’application **Environement** est **API REST Java** permettant de signaler et de visualiser des observations d’espèces (animales, végétales...) dans la nature.  
+Elle repose sur une architecture **Spring Boot**, **JPA/Hibernate** pour la persistance, et **MySQL** comme base de données relationnelle.
 
-Une application Java permettant de signaler et de visualiser des observations d’espèces dans la nature a été en grande partie développée.
-Votre mission est de **compléter la modélisation et certaines parties du code** pour finaliser l’application.
-
----
-
-## **1. Objectifs**
-
-Vous devez :
-
-1. **Compléter la modélisation** (diagramme UML et MLD) à partir des spécifications fournies.
-2. **Compléter certaines classes Java** manquantes ou incomplètes pour assurer le bon fonctionnement de l’application.
-3. **Vérifier et compléter la logique métier**, notamment le calcul des émissions de CO₂.
+Les principales fonctionnalités sont :  
+- Création et consultation des **espèces** (*Species*).  
+- Création et consultation des **observations** (*Observations*).  
+- Création et consultation des **déplacements** (*Travellogs*).  
+- Gestion des relations entre entités (une observation est liée à une espèce et à plusieurs travellogs).  
+- Documentation de l’API via **Swagger**.  
+- Utilisation de **DTOs** pour la récupération et l’exposition des données.
 
 ---
 
-## **2. Pré-requis techniques**
-
-* **Java**
-* **Maven**
-* **MySQL**
-
-  * Créer une base de données nommée **`environement_db`**
-  * Utilisateur par défaut : `root`
-  * Mot de passe : vide (ou votre configuration locale)
-* Un outil UML pour compléter les fichiers fournis :
-  * Les fichiers UML et MLD se trouvent dans à la racine du dépôt
-
+## Technologies utilisées
+- **Java 22**  
+- **Spring Boot** (Spring Web, Spring Data JPA)  
+- **Maven** (gestionnaire de dépendances et de build)  
+- **MySQL** (base de données)  
+- **Swagger / OpenAPI** (documentation de l’API REST)
+- **Lombok** (facilitation de la création de getters, setters, constructeurs des entités) 
 
 ---
 
-## **3. Partie modélisation**
+## Modèle de données
+Le modèle repose sur trois entités principales :  
 
-* **Compléter le diagramme de classes UML** partiellement rempli.
-* **Compléter le MLD** (Modèle Logique de Données) en respectant :
+- **Specie :**  
+  * id : Long
+  * commonName : String
+  * scientificName : String
+  * category : Category (enum)
 
-  * Les types
-  * Les relations
-  * Les cardinalités
+- **Observation :**  
+  * id : Long
+  * specie : Specie
+  * observerName : String
+  * location : String
+  * latitude / longitude : Double
+  * observationDate : LocalDate
+  * comment : String (optionnel)
 
----
+- **Travellog :**  
+  * id : Long
+  * observation : Observation
+  * distanceKm : Double
+  * mode : TravelMode (enum)
+  * estimatedCo2Kg : Double 
 
-## **4. Partie développement**
+### Relations principales
+- `Specie (1) ⟶ (N) Observation`  
+- `Observation (1) ⟶ (N) Travellog`
 
-Dans le code fourni :
+### Enumérations
+- **Catégories d'espèces :**
+  - BIRD *(oiseau)*
+  - MAMMAL *(mammifère)*
+  - INSECT *(insecte)*
+  - PLANT *(plante)*
+  - OTHER *(autre)*
 
-1. **Compléter les classes manquantes** décrites dans les spécifications (voir entités plus bas).
-2. **Compléter les endpoints REST** inachevés
-
----
-
-## **5. Spécifications fonctionnelles utiles**
-
-### **Entités**
-
-#### Espèce (`Specie`)
-
-* id : Long
-* commonName : String
-* scientificName : String
-* category : Category (enum)
-
-#### Enum `Category`
-
-```java
-public enum Category {
-    BIRD, MAMMAL, INSECT, PLANT, OTHER
-}
-```
-
-#### Observation (`Observation`)
-
-* id : Long
-* specie : Specie
-* observerName : String
-* location : String
-* latitude / longitude : Double
-* observationDate : LocalDate
-* comment : String (optionnel)
-
-#### Déplacement (`TravelLog`)
-
-* id : Long
-* observation : Observation
-* distanceKm : Double
-* mode : TravelMode (enum)
-* estimatedCo2Kg : Double
-
-#### Enum `TravelMode`
-
-```java
-public enum TravelMode {
-    WALKING, BIKE, CAR, BUS, TRAIN, PLANE
-}
-```
+- **Modes de transport :**
+  - WALKING *(à pied)*
+  - BIKE *(vélo)*
+  - CAR *(voiture)*
+  - BUS *(bus)*
+  - TRAIN *(train)*
+  - PLANE *(avion)*
 
 ---
 
-## **6. Facteurs d’émission CO₂**
-
-| Mode de transport | Émission CO₂ (kg/km) |
-| ----------------- | -------------------- |
-| Walking / Bike    | 0                    |
-| Car               | 0.22                 |
-| Bus               | 0.11                 |
-| Train             | 0.03                 |
-| Plane             | 0.259                |
-
-Formule :
-
-```
-estimatedCo2Kg = distanceKm × facteurEmission
-```
+## Prérequis
+- Java 22 installé et configuré.  
+- Maven installé.
+- MySQL en fonctionnement (les informations de connexion sont à compléter dans `application.properties`).  
 
 ---
 
-## **7. Endpoints REST CO₂**
+## Installation et lancement
+1. **Cloner le projet** :  
+   ```bash
+   git clone https://github.com/Morgan-B3/ECF_05_AOUT_2025.git
+   cd Environement
+
+2. **Lancer le projet** :
+   ```bash
+   mvn spring-boot:run
+
+3. **Utilisation :**
+
+    - Une fois l'application lancée, les différents endpoints sont disponibles via Swagger à l'URL suivante : http://localhost:8080/swagger-ui/index.html#
+
+## Modélisation des données
+
+La conception de l'application a été réalisée en suivant les diagrammes suivants (également présents à la racine du projet) :
+
+- **Modèle logique de données :**
+  
+![Modèle Logique de Données](MLD.png)
+
+- **Diagramme de classes :**
+  
+![Diagramme de classes](ClassDiagram.png)
+
+---
+
+## Exemples de endpoints
 
 ##### Espèces
 
@@ -133,24 +122,9 @@ estimatedCo2Kg = distanceKm × facteurEmission
 * `GET /observations/by-location?location=Paris` → Filtrer par lieu
 * `GET /observations/by-species/{speciesId}` → Filtrer par espèce
 
-#####  Déplacement
+##### Déplacements
 * `POST /travel-logs`
   Créer un déplacement lié à une observation (inclut le calcul CO₂).
 * `GET /travel-logs`
   Liste des déplacements + émissions totales CO₂.
 * `GET /travel-logs/stats/{idObservation}`
-  Renvoie :
-
-  ```json
-  {
-    "totalDistanceKm": 45.5,
-    "totalEmissionsKg": 8.4,
-    "byMode": {
-      "CAR": 5.5,
-      "TRAIN": 2.9
-    }
-  }
----
-
-**Dépôt Git** : [https://github.com/utopios/ECF_05_AOUT_2025.git/](https://github.com/utopios/ECF_05_AOUT_2025.git/)
-
